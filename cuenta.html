@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cuenta · Impresión 3D</title>
+<link rel="stylesheet" href="css/estilos.css">
+</head>
+<body data-page="cuenta">
+<nav>
+<span class="logo">Impresión 3D</span>
+<a href="index.html">Inicio</a>
+<a href="cotizador.html">Cotizador</a>
+<a href="vendedores.html">Vendedores</a>
+<a href="taller.html" id="navTaller" style="display:none">Mi taller</a>
+<a href="cuenta.html" class="on" id="navAcc">Cuenta</a>
+</nav>
+
+<section class="view" id="cuenta">
+<h1 style="font-size:1.6rem">Cuenta y registro de vendedores</h1>
+<div class="card" id="accStatus"></div>
+<div class="card" id="authBox" style="display:none;margin-top:16px">
+<div class="tabs"><button type="button" id="tabIn" class="on">Iniciar sesión</button><button type="button" id="tabUp">Crear cuenta</button></div>
+<label for="ae">Correo</label><input id="ae" type="email" autocomplete="email">
+<label for="ap">Contraseña (mínimo 6 caracteres)</label><input id="ap" type="password" autocomplete="current-password">
+<button class="btn" id="authGo" type="button">Iniciar sesión</button>
+<div class="msg" id="authMsg"></div>
+</div>
+<div class="card" id="accForm" style="margin-top:16px;display:none">
+<h2 id="formTitle">Registro</h2>
+<label for="rrol">Quiero registrarme como</label><select id="rrol"><option value="cliente">Cliente (quiero cotizar)</option><option value="vendedor">Vendedor (quiero ofrecer impresiones)</option></select>
+<label for="rn">Nombre o negocio</label><input id="rn" maxlength="40">
+<label for="rtel">WhatsApp (con indicativo, ej. 573001234567)</label><input id="rtel" type="tel" inputmode="numeric">
+<div id="sellerFields" style="display:none"><label for="rno">Descripción corta</label><input id="rno" maxlength="60" placeholder="Ej. Entrega rápida en Bogotá">
+<div id="priceFields"><div class="row">
+<div><label for="rh">Precio por hora (COP)</label><input id="rh" type="number" min="0" step="100"></div>
+<div><label for="rg2">Margen (%)</label><input id="rg2" type="number" min="0" max="200" step="1"></div>
+</div>
+<div class="row">
+<div><label for="rpla">PLA (COP/kg)</label><input id="rpla" type="number" min="0" step="1000"></div>
+<div><label for="rpetg">PETG (COP/kg)</label><input id="rpetg" type="number" min="0" step="1000"></div>
+</div>
+<div class="row">
+<div><label for="rabs">ABS (COP/kg)</label><input id="rabs" type="number" min="0" step="1000"></div>
+<div><label for="rtpu">TPU (COP/kg)</label><input id="rtpu" type="number" min="0" step="1000"></div>
+</div>
+</div>
+</div>
+<button class="btn" id="saveSeller" type="button">Guardar registro</button>
+<button class="btn del" id="delSeller" type="button" style="display:none">Borrar mi cuenta</button>
+<div class="msg" id="formMsg"></div>
+</div>
+<button class="btn sec" id="logout" type="button" style="display:none;margin-top:16px">Cerrar sesión</button>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

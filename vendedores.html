@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Vendedores · Impresión 3D</title>
+<link rel="stylesheet" href="css/estilos.css">
+</head>
+<body data-page="vendedores">
+<nav>
+<span class="logo">Impresión 3D</span>
+<a href="index.html">Inicio</a>
+<a href="cotizador.html">Cotizador</a>
+<a href="vendedores.html" class="on">Vendedores</a>
+<a href="taller.html" id="navTaller" style="display:none">Mi taller</a>
+<a href="cuenta.html" id="navAcc">Cuenta</a>
+</nav>
+
+<section class="view" id="vendedores">
+<h1 style="font-size:1.6rem">Vendedores</h1>
+<div class="grid" id="vcards"></div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

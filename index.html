@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Inicio · Impresión 3D</title>
+<link rel="stylesheet" href="css/estilos.css">
+</head>
+<body data-page="inicio">
+<nav>
+<span class="logo">Impresión 3D</span>
+<a href="index.html" class="on">Inicio</a>
+<a href="cotizador.html">Cotizador</a>
+<a href="vendedores.html">Vendedores</a>
+<a href="taller.html" id="navTaller" style="display:none">Mi taller</a>
+<a href="cuenta.html" id="navAcc">Cuenta</a>
+</nav>
+
+<section class="view" id="inicio">
+<div class="hero">
+<h1>Cotiza tu impresión 3D en segundos</h1>
+<p class="mut">Elige un vendedor, ingresa el tiempo y el material, y conoce el precio al instante.</p>
+<a class="btn" style="width:min(100%,340px);margin:18px auto 0" href="cotizador.html">Empezar a cotizar</a>
+<a class="btn sec" style="width:min(100%,340px);margin:10px auto 0" href="cuenta.html">Crear cuenta / ser vendedor</a>
+</div>
+<div class="grid steps">
+<div class="card"><div class="step">1</div><h2>Elige al vendedor</h2><p class="mut">Cada vendedor define su precio por hora de impresión y por kilo de material.</p></div>
+<div class="card"><div class="step">2</div><h2>Ingresa tu pieza</h2><p class="mut">Material, tiempo estimado, peso en gramos y cantidad de piezas.</p></div>
+<div class="card"><div class="step">3</div><h2>Contáctalo</h2><p class="mut">Con un clic le envías la cotización por WhatsApp para concretar el pedido.</p></div>
+</div>
+<div class="card" style="margin-top:16px"><h2>¿Cómo se calcula el precio?</h2>
+<p class="mut" style="margin:0">Costo = (horas × precio por hora + gramos × precio por kg ÷ 1000) × cantidad, más el margen del vendedor.</p></div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
