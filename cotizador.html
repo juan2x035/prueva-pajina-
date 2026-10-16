@@ -1,55 +1,103 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Cotizador · Impresión 3D</title>
-<link rel="stylesheet" href="css/estilos.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cotizador · Impresión 3D</title>
+  <link rel="stylesheet" href="css/estilos.css">
 </head>
 <body data-page="cotizador">
-<nav>
-<span class="logo">Impresión 3D</span>
-<a href="index.html">Inicio</a>
-<a href="cotizador.html" class="on">Cotizador</a>
-<a href="vendedores.html">Vendedores</a>
-<a href="taller.html" id="navTaller" style="display:none">Mi taller</a>
-<a href="cuenta.html" id="navAcc">Cuenta</a>
-</nav>
 
-<section class="view" id="cotizador">
-<h1 style="font-size:1.6rem">Cotizador</h1>
-<div class="grid">
-<div class="card">
-<h2>Tu impresión</h2>
-<label for="sel">Vendedor</label><select id="sel"></select>
-<label for="mat">Material</label><select id="mat"></select>
-<div class="row">
-<div><label for="h">Horas</label><input id="h" type="number" min="0" step="1" value="2"></div>
-<div><label for="m">Minutos</label><input id="m" type="number" min="0" max="59" step="1" value="30"></div>
-</div>
-<div class="row">
-<div><label for="g">Peso (gramos)</label><input id="g" type="number" min="0" step="1" value="60"></div>
-<div><label for="q">Cantidad</label><input id="q" type="number" min="1" step="1" value="1"></div>
-</div>
-<p class="note">El tiempo y el peso los entrega el programa de corte (Cura, PrusaSlicer, etc.).</p>
-</div>
-<div class="card">
-<h2>Cotización de <span id="nm"></span></h2>
-<div class="line"><span>Costo por tiempo</span><b id="rt"></b></div>
-<div class="line"><span>Costo del material</span><b id="rm"></b></div>
-<div class="line"><span>Margen del vendedor</span><b id="rg"></b></div>
-<div class="total" id="tot"></div>
-<div class="note" style="text-align:center">Total estimado en pesos colombianos (COP)</div>
-<a class="btn" id="wa" href="#" target="_blank" rel="noopener">Contactar a este vendedor</a>
-<div class="msg" id="waMsg" style="color:var(--er)"></div>
-</div>
-</div>
-<div class="card" style="margin-top:16px"><h2>Comparación entre vendedores</h2><div id="cmp"></div></div>
-</section>
+  <!-- MENÚ: es igual en todas las páginas; "activa" marca en cuál estás. -->
+  <nav>
+    <span class="logo">Impresión 3D</span>
+    <a href="index.html">Inicio</a>
+    <a href="cotizador.html" id="navCot" class="activa" hidden>Cotizador</a>
+    <a href="vendedores.html">Vendedores</a>
+    <a href="taller.html" id="navTaller" hidden>Mi taller</a>
+    <a href="cuenta.html" id="navAcc">Cuenta</a>
+  </nav>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
-<script src="js/config.js"></script>
-<script src="js/api.js"></script>
-<script src="js/app.js"></script>
+  <main>
+    <h1>Cotizador</h1>
+
+    <!-- Se muestra solo cuando todavía no hay favoritos. -->
+    <div class="tarjeta" id="sinFavoritos" hidden>
+      <h2>Aún no tienes vendedores favoritos</h2>
+      <p class="suave" style="margin:0">Para cotizar, primero elige tus favoritos en la pestaña Vendedores.</p>
+      <a class="btn" href="vendedores.html">Ir a Vendedores</a>
+    </div>
+
+    <div id="contenido">
+      <div class="cuadricula">
+
+        <!-- Columna 1: elegir vendedor y (opcional) la calculadora manual -->
+        <div class="tarjeta">
+          <h2>Tu cotización</h2>
+          <label for="vendedor">Vendedor</label>
+          <select id="vendedor"></select>
+
+          <label class="interruptor">
+            <input type="checkbox" id="interruptor"><span class="pista"></span>
+            <span>Activar cotización manual</span>
+          </label>
+
+          <div id="manual" hidden>
+            <label for="material">Material</label>
+            <select id="material"></select>
+            <div class="fila">
+              <div><label for="horas">Horas</label><input id="horas" type="number" min="0" step="1" value="2"></div>
+              <div><label for="minutos">Minutos</label><input id="minutos" type="number" min="0" max="59" step="1" value="30"></div>
+            </div>
+            <div class="fila">
+              <div><label for="gramos">Peso (gramos)</label><input id="gramos" type="number" min="0" step="1" value="60"></div>
+              <div><label for="cantidad">Cantidad</label><input id="cantidad" type="number" min="1" step="1" value="1"></div>
+            </div>
+            <p class="nota">El tiempo y el peso los entrega el programa de corte (Cura, PrusaSlicer, etc.).</p>
+          </div>
+        </div>
+
+        <!-- Columna 2: resultado, contacto y chat -->
+        <div class="tarjeta">
+          <h2>Vendedor: <span id="nombre"></span></h2>
+          <div class="estrellas" id="resenaVendedor"></div>
+
+          <div id="resultado" hidden>
+            <div class="linea"><span>Costo por tiempo</span><b id="costoTiempo"></b></div>
+            <div class="linea"><span>Costo del material</span><b id="costoMaterial"></b></div>
+            <div class="linea"><span>Margen del vendedor</span><b id="costoMargen"></b></div>
+            <div class="total" id="total"></div>
+            <p class="nota" style="text-align:center">Total estimado en pesos colombianos (COP)</p>
+            <p class="aviso error" id="sinMaterial" hidden></p>
+          </div>
+
+          <button type="button" class="btn" id="contactar">Contactar a este vendedor</button>
+          <p class="aviso" id="telefono"></p>
+
+          <div class="chat" id="chat" hidden>
+            <div class="chat-cabecera"><b id="chatTitulo"></b><button type="button" class="enlace" id="chatCerrar">Cerrar</button></div>
+            <div id="chatMensajes"></div>
+            <div class="chat-entrada">
+              <input id="chatTexto" maxlength="200" placeholder="Escribe un mensaje">
+              <button type="button" class="btn" id="chatEnviar">Enviar</button>
+            </div>
+            <button type="button" class="btn claro" id="calificar">Calificar vendedor</button>
+            <div id="cajaEstrellas" hidden></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tarjeta separada" id="comparacion" hidden>
+        <h2>Comparación entre vendedores</h2>
+        <div id="listaComparacion"></div>
+      </div>
+    </div>
+  </main>
+
+  <!-- SCRIPTS: el orden importa, cada archivo usa funciones de los anteriores. -->
+  <script src="js/utilidades.js"></script>
+  <script src="js/almacenamiento.js"></script>
+  <script src="js/sesion.js"></script>
+  <script src="js/cotizador.js"></script>
 </body>
 </html>

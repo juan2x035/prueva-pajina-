@@ -1,44 +1,117 @@
-:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
---bg:#f5f6fa;--card:#fff;--tx:#1b1e2b;--mut:#666c82;--ac:#4f46e5;--acx:#fff;--bd:#dfe2ec;--ok:#0f9d6b;--er:#c0392b}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#12141c;--card:#1c1f2b;--tx:#eceef6;--mut:#9aa0b8;--ac:#818cf8;--acx:#12141c;--bd:#2d3142;--ok:#34d399;--er:#f87171}}
-:root[data-theme="dark"]{--bg:#12141c;--card:#1c1f2b;--tx:#eceef6;--mut:#9aa0b8;--ac:#818cf8;--acx:#12141c;--bd:#2d3142;--ok:#34d399;--er:#f87171}
-html{scroll-padding-top:env(safe-area-inset-top,0px)}
-*,*:before,*:after{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
-nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:flex;flex-wrap:wrap;gap:6px;align-items:center;justify-content:center;padding:10px 14px;background:var(--card);border-bottom:1px solid var(--bd)}
-nav .logo{font-weight:700;margin-right:auto;white-space:nowrap}
-nav a{text-decoration:none;border:0;background:transparent;color:var(--mut);font:inherit;padding:8px 14px;border-radius:8px;cursor:pointer;white-space:nowrap}
-nav a.on{background:var(--ac);color:var(--acx)}
-.view{max-width:900px;margin:0 auto;padding:20px 16px}
-.view.on{display:block}
-h1{font-size:clamp(1.6rem,5vw,2.4rem);margin:0 0 8px}
-h2{margin:0 0 12px;font-size:1.1rem}
-.mut{color:var(--mut)}
-.grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
-.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:18px}
-.hero{text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:55vh;padding:56px 16px;margin-bottom:32px}
-.hero p{max-width:520px}
-.steps{grid-template-columns:repeat(3,1fr)}
-@media (max-width:700px){.steps{grid-template-columns:1fr}}
-@media (max-width:640px){nav .logo{width:100%;text-align:center;margin:0}nav a{flex:1 1 auto;padding:8px 10px;font-size:.9rem}}
-.step{font-size:2rem;font-weight:700;color:var(--ac)}
-label{display:block;font-size:.85rem;color:var(--mut);margin:10px 0 4px}
-input,select{width:100%;padding:10px;border-radius:8px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font:inherit}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.line,.cmp{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px dashed var(--bd)}
-.cmp.best b{color:var(--ok)}
-.total{font-size:2rem;font-weight:700;color:var(--ok);text-align:center;margin:14px 0 4px}
-.btn{display:block;width:100%;text-align:center;padding:12px;border-radius:10px;border:0;background:var(--ac);color:var(--acx);font:inherit;font-weight:600;cursor:pointer;text-decoration:none;margin-top:10px}
-.btn.sec{background:transparent;color:var(--ac);border:1px solid var(--ac)}
-.btn.del{background:transparent;color:var(--er);border:1px solid var(--er)}
-.note{font-size:.8rem;color:var(--mut);margin-top:8px}
-.msg{font-size:.9rem;margin-top:10px}
-.badge{display:inline-block;font-size:.7rem;padding:2px 8px;border-radius:99px;background:var(--ac);color:var(--acx);margin-left:6px;vertical-align:middle}
-table{width:100%;border-collapse:collapse;font-size:.9rem;margin-top:8px}
-td{padding:6px 0;border-bottom:1px dashed var(--bd)}
-td:last-child{text-align:right}
-.tab{overflow-x:auto}
+/* =====================================================================
+   ESTILOS DEL COTIZADOR 3D
+   Índice: 1 Variables · 2 Base · 3 Menú · 4 Tarjetas · 5 Formularios
+           6 Botones · 7 Inicio · 8 Vendedores · 9 Cotizador · 10 Móvil
+   ===================================================================== */
 
-.tabs{display:flex;gap:6px;margin-bottom:8px}
-.tabs button{flex:1;padding:10px;border:1px solid var(--bd);border-radius:8px;background:transparent;color:var(--mut);font:inherit;cursor:pointer}
-.tabs button.on{background:var(--ac);color:var(--acx);border-color:var(--ac)}
+/* 1. VARIABLES: cada color se define una vez y se usa con var(--nombre).
+      Si cambias un color aquí, cambia en toda la página. */
+:root {
+  --fondo: #f5f6fa;  --tarjeta: #ffffff;  --texto: #1b1e2b;  --suave: #666c82;
+  --acento: #4f46e5; --sobre-acento: #ffffff; --borde: #dfe2ec;
+  --ok: #0f9d6b;    --error: #c0392b;     --estrella: #e0a100;
+}
+/* Modo oscuro: si el dispositivo lo usa, se reemplazan los colores. */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --fondo: #12141c; --tarjeta: #1c1f2b; --texto: #eceef6; --suave: #9aa0b8;
+    --acento: #818cf8; --sobre-acento: #12141c; --borde: #2d3142;
+    --ok: #34d399;    --error: #f87171;
+  }
+}
+
+/* 2. BASE */
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; background: var(--fondo); color: var(--texto);
+       font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+[hidden] { display: none !important; }   /* el atributo "hidden" siempre oculta */
+main { max-width: 900px; margin: 0 auto; padding: 20px 16px; }
+h1 { font-size: 1.6rem; margin: 0 0 12px; }
+h2 { font-size: 1.1rem; margin: 0 0 12px; }
+.suave { color: var(--suave); }
+.nota { font-size: .8rem; color: var(--suave); margin-top: 8px; }
+.aviso { font-size: .9rem; margin: 10px 0 0; }
+.error { color: var(--error); }
+.ok { color: var(--ok); }
+
+/* 3. MENÚ SUPERIOR */
+nav { position: sticky; top: 0; z-index: 5; display: flex; flex-wrap: wrap; gap: 6px;
+      align-items: center; justify-content: center; padding: 10px 14px;
+      background: var(--tarjeta); border-bottom: 1px solid var(--borde); }
+.logo { font-weight: 700; margin-right: auto; }
+nav a { color: var(--suave); text-decoration: none; padding: 8px 14px; border-radius: 8px; }
+nav a.activa { background: var(--acento); color: var(--sobre-acento); }
+
+/* 4. TARJETAS Y CUADRÍCULAS */
+.cuadricula { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+.pasos { grid-template-columns: repeat(3, 1fr); }
+.tarjeta { background: var(--tarjeta); border: 1px solid var(--borde); border-radius: 14px; padding: 18px; }
+.separada { margin-top: 16px; }
+.fila { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.linea { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed var(--borde); }
+
+/* 5. FORMULARIOS */
+label { display: block; font-size: .85rem; color: var(--suave); margin: 10px 0 4px; }
+input, select { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--borde);
+                background: var(--fondo); color: var(--texto); font: inherit; }
+
+/* 6. BOTONES */
+.btn { display: block; width: 100%; margin-top: 10px; padding: 12px; border-radius: 10px;
+       border: 1px solid var(--acento); background: var(--acento); color: var(--sobre-acento);
+       font: inherit; font-weight: 600; text-align: center; text-decoration: none; cursor: pointer; }
+.btn.claro { background: transparent; color: var(--acento); }
+.btn.peligro { background: transparent; color: var(--error); border-color: var(--error); }
+.btn.activo { background: var(--acento); color: var(--sobre-acento); }  /* favorito marcado */
+.enlace { background: none; border: 0; color: var(--suave); font: inherit; cursor: pointer; }
+.pestanas { display: flex; gap: 6px; margin-bottom: 8px; }
+.pestanas button { flex: 1; padding: 10px; border: 1px solid var(--borde); border-radius: 8px;
+                   background: transparent; color: var(--suave); font: inherit; cursor: pointer; }
+.pestanas button.activa { background: var(--acento); color: var(--sobre-acento); border-color: var(--acento); }
+
+/* 7. INICIO */
+.portada { min-height: 55vh; padding: 56px 16px; margin-bottom: 32px; display: flex;
+           flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+.portada h1 { font-size: clamp(1.6rem, 5vw, 2.4rem); }
+.portada p { max-width: 520px; }
+.portada .btn { width: min(100%, 340px); }
+.numero { font-size: 2rem; font-weight: 700; color: var(--acento); }
+
+/* 8. VENDEDORES Y ESTRELLAS */
+table { width: 100%; border-collapse: collapse; font-size: .9rem; margin: 8px 0; }
+td { padding: 6px 0; border-bottom: 1px dashed var(--borde); }
+td:last-child { text-align: right; }
+.insignia { font-size: .7rem; padding: 2px 8px; border-radius: 99px; margin-left: 6px;
+            background: var(--acento); color: var(--sobre-acento); vertical-align: middle; }
+.estrellas { color: var(--estrella); font-weight: 600; letter-spacing: 1px; margin: 4px 0; }
+.estrella { background: none; border: 0; padding: 0 2px; font-size: 1.6rem; line-height: 1;
+            color: var(--borde); cursor: pointer; }
+.estrella.marcada { color: var(--estrella); }
+
+/* 9. COTIZADOR: interruptor, resultado, chat y taller */
+.interruptor { display: flex; align-items: center; gap: 10px; margin: 14px 0 6px;
+               color: var(--texto); font-size: .95rem; cursor: pointer; }
+.interruptor input { position: absolute; opacity: 0; width: 0; height: 0; }
+.pista { position: relative; flex: none; width: 44px; height: 24px; border-radius: 99px;
+         background: var(--borde); transition: background .2s; }
+.pista::after { content: ""; position: absolute; top: 3px; left: 3px; width: 18px; height: 18px;
+                border-radius: 50%; background: #fff; transition: transform .2s; }
+.interruptor input:checked + .pista { background: var(--acento); }
+.interruptor input:checked + .pista::after { transform: translateX(20px); }
+.total { font-size: 2rem; font-weight: 700; color: var(--ok); text-align: center; margin: 14px 0 4px; }
+.mejor b { color: var(--ok); }
+.chat { margin-top: 14px; padding: 12px; border: 1px solid var(--borde); border-radius: 12px; background: var(--fondo); }
+.chat-cabecera { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+#chatMensajes { max-height: 180px; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; margin-bottom: 8px; }
+.mensaje { align-self: flex-end; max-width: 85%; padding: 6px 10px; border-radius: 10px; font-size: .9rem;
+           word-break: break-word; background: var(--acento); color: var(--sobre-acento); }
+.chat-entrada { display: flex; gap: 8px; }
+.chat-entrada .btn { width: auto; margin: 0; padding: 10px 16px; }
+.fila-material { display: grid; grid-template-columns: 1fr 90px; gap: 10px; align-items: end; }
+.fila-material .btn { margin: 0; padding: 10px; }
+
+/* 10. MÓVIL: reglas que solo se aplican en pantallas angostas */
+@media (max-width: 700px) { .pasos { grid-template-columns: 1fr; } }
+@media (max-width: 640px) {
+  .logo { width: 100%; text-align: center; margin: 0; }
+  nav a { flex: 1 1 auto; text-align: center; padding: 8px 10px; font-size: .9rem; }
+}
